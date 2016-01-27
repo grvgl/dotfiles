@@ -28,12 +28,19 @@ Plugin 'szw/vim-ctrlspace'
 Plugin 'Konfekt/FastFold'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
-Plugin 'leafgarland/typescript-vim'
+Plugin 'leafgarland/typescript-vim' "Provides syntax highlighting and a method to compile your typescript to vanilla javascript.
+Plugin 'Quramy/tsuquyomi' " A client for TSServer
+Plugin 'Shougo/vimproc.vim' "An asynchronous process manager
+Plugin 'Valloric/YouCompleteMe' " A fast, as-you-type, fuzzy-search code completion engine
+Plugin 'ternjs/tern_for_vim' " YouCompleteMe needs it
+Plugin 'icholy/typescript-tools.git'
 Plugin 'Shutnik/jshint2.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'tomtom/tcomment_vim'
+Plugin 'tomtom/tcomment_vim' " https://github.com/tomtom/tcomment_vim
 Plugin 'severin-lemaignan/vim-minimap'
 Plugin 'burnettk/vim-angular'
+Plugin 'majutsushi/tagbar'
+Plugin 'ternjs/tern_for_vim' "In JavaScript files, the package will hook into omni completion to handle autocompletion
 
 call vundle#end()                   " required
 filetype plugin indent on           " required
@@ -42,6 +49,19 @@ filetype plugin indent on           " required
 "npm install -g eslint
 let g:syntastic_javascript_checkers = ['eslint']
 let g:minimap_highlight='Visual'
+
+"othree/javascript-libraries-syntax.vim      Setup Vim for following libraries
+let g:used_javascript_libs = 'angularjs,angularui,underscore,backbone'
+
+"Install typescript-tools
+"npm install -g typescript-tools
+
+"Use YouCompleteMe to have omni-completion automatically.
+"if !exists(“g:ycm_semantic_triggers”)
+ "let g:ycm_semantic_triggers = {}
+ "endif
+ "let g:ycm_semantic_triggers[‘typescript’] = [‘.’]
+
 
 " hide unsaved files and allow switching to other buffers
 set hidden
@@ -65,7 +85,7 @@ function MyDiff()
   if $VIMRUNTIME =~ ' '
     if &sh =~ '\<cmd'
       let cmd = '""' . $VIMRUNTIME . '\diff"'
-      let eq = '"'
+      ret eq = '"'
     else
       let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
     endif
@@ -125,11 +145,23 @@ set number
 "Set working directory to the location of current file.
 set autochdir
 
-"Move lines up and down, A-j => Alt + j
+"Move lines up and down
 nnoremap <A-j> :m .+1<CR>==
 nnoremap <A-k> :m .-2<CR>==
 inoremap <A-j> <Esc>:m .+1<CR>==gi
 inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
+"Add/Remove a widget
+":set guioptions-=m  "remove menu bar
+":set guioptions-=T  "remove toolbar
+":set guioptions-=r  "remove right-hand scroll bar
+":set guioptions-=L  "remove left-hand scroll bar
+":set go+=m          "add menu bar, 'go' is an abbreviation for 'guioptions'
 
+"Press F8 to toggle Tagbar
+nmap <F8> :TagbarToggle<CR>
+
+" highlightt the current line number
+highlight CursorLineNR guifg=#ffffff ctermfg=15
+set background=dark
