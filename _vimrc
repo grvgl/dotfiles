@@ -32,7 +32,7 @@ Plugin 'leafgarland/typescript-vim' "Provides syntax highlighting and a method t
 Plugin 'Quramy/tsuquyomi' " A client for TSServer
 Plugin 'Shougo/vimproc.vim' "An asynchronous process manager
 Plugin 'Valloric/YouCompleteMe' " A fast, as-you-type, fuzzy-search code completion engine
-Plugin 'ternjs/tern_for_vim' " YouCompleteMe needs it
+" Plugin 'ternjs/tern_for_vim' " YouCompleteMe needs it
 Plugin 'icholy/typescript-tools.git'
 Plugin 'Shutnik/jshint2.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
@@ -41,6 +41,7 @@ Plugin 'severin-lemaignan/vim-minimap'
 Plugin 'burnettk/vim-angular'
 Plugin 'majutsushi/tagbar'
 Plugin 'ternjs/tern_for_vim' "In JavaScript files, the package will hook into omni completion to handle autocompletion
+Plugin 'maralla/completor.vim' "Autocomplete
 
 call vundle#end()                   " required
 filetype plugin indent on           " required
@@ -164,4 +165,24 @@ nmap <F8> :TagbarToggle<CR>
 
 " highlightt the current line number
 highlight CursorLineNR guifg=#ffffff ctermfg=15
-set background=dark
+colorscheme delek
+
+" YouCompleteMe
+set encoding=utf-8
+
+"Bind autocomplete to TAB such that you still get TAB unless you are at the end of a word to complete. It's super convenient.
+    function! InsertTabWrapper()
+      let col = col('.') - 1
+      if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+      else
+        return "\<c-p>"
+      endif
+    endfunction
+    inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+
+"TypeScript
+let g:typescript_compiler_binary = 'tsc'
+let g:typescript_compiler_options = ''
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
